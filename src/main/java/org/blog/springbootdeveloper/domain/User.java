@@ -3,6 +3,7 @@ package org.blog.springbootdeveloper.domain;
 import jakarta.persistence.*;
 import jakarta.persistence.Entity;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,8 +26,14 @@ public class User implements UserDetails {
     @Column(name = "email", nullable = false, unique = true)
     private String email;
 
-    @Column(name = "password")
-    private String pasword;
+    @Column(name = "password",nullable = false)
+    private String password;
+
+    @Builder
+    public User(String email, String password,String auth) {
+        this.email = email;
+        this.password = password;
+    }
 
     @Override //권한 반환
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -35,7 +42,7 @@ public class User implements UserDetails {
 
     @Override
     public String getPassword() {
-        return pasword;
+        return password;
     }
 
     @Override
