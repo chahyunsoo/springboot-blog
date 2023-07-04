@@ -40,7 +40,7 @@ public class BlogApiController {
     public ResponseEntity<ArticleResponse> findArticle(@PathVariable long id) {
         Article article = blogService.findById(id);
 
-        return ResponseEntity.ok()
+        return ResponseEntity  .ok()
                 .body(new ArticleResponse(article));
     }
 
