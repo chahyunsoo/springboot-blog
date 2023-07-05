@@ -20,18 +20,26 @@ import java.util.Set;
 @Service
 public class TokenProvider {
     private final JwtProperties jwtProperties;
+    /*
+    @Autowired
+    private final JwtProperties jwtProperties;   -->허용 안됨
+    이유는, final은 선언과 동시에 초기화 or  생성자에서 초기화해야 함
+    @Autowired는 Bean의 생명주기에 따라 필드에 값을 주입하는데,이것은 생성자 호출 이후에 발생하므로
+    final에는 붙일 수 없다.
+     */
 
 //    @RequiredArgsConstructor가 대체
 //    public TokenProvider(JwtProperties jwtProperties) {
 //        this.jwtProperties = jwtProperties;
 //    }
 
+    //JWT 토큰 생성 메소드, 사용자 정보와 토큰의 만료시간을 받아 토큰 생성
     public String generateToken(User user, Duration expiredAt) {
         Date now = new Date();
         return makeToken(new Date(now.getTime() + expiredAt.toMillis()), user);
     }
 
-    //JWT 토큰 생성 메소드
+    //JWT 토큰 생성 메소드, 실제 토큰을 만드는 로직, 토큰의 유효기간과 사용자 정보를 받음
     private String makeToken(Date expiry, User user) {
         Date now = new Date();
 
@@ -46,6 +54,7 @@ public class TokenProvider {
                 .compact();
     }
 
+    //받은 토큰이 유효한지 검증하는 메소드
     public boolean validToken(String token) {
         try{
             Jwts.parser()
@@ -57,7 +66,8 @@ public class TokenProvider {
         }
     }
 
-    public Authentication getAutentication(String token) {
+    //JWT 토큰에서 인증정보를 추출
+    public Authentication getAuthentication(String token) {
         Claims claims = getClaims(token);
         Set<SimpleGrantedAuthority> authorities = Collections.singleton(new SimpleGrantedAuthority("ROLE_USER"));
 
@@ -66,15 +76,17 @@ public class TokenProvider {
                 (),"",authorities), token, authorities);
     }
 
+    //토큰에서 사용자 ID 추출
     public Long getUserId(String token) {
         Claims claims = getClaims(token);
         return claims.get("id", Long.class);
     }
 
+    //토큰에서 Claims 객체 추출
     private Claims getClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(jwtProperties.getSecretKey())
                 .parseClaimsJws(token)
-                .getBody();
+                .getBody();  //payload부분 반환함
     }
 }
