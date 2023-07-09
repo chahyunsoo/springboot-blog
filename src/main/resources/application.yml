@@ -14,3 +14,13 @@ spring:
 jwt:
   issuer: coys@gmail.com
   secret_key: maddison-tapsoba
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 8003....
+            client-secret: GOCS....
+            scope:
+              -email
+              -profile
