@@ -19,16 +19,17 @@ public class OAuth2UserCustomService extends DefaultOAuth2UserService {
     @Override
     public OAuth2User loadUser(OAuth2UserRequest userrequest) throws OAuth2AuthenticationException {
         //요청을 바탕으로 user정보를 담은 객체를 반환함
-        OAuth2User user = super.loadUser(userrequest);
+        OAuth2User user = super.loadUser(userrequest);  //DefaultOAuth2UserService의 loadUser를 호출한 것
         saveOrUpdate(user);
         return user;
     }
 
-    //user가 없다면 update, 있다면 user 생성함
+    //user가 없다면 update, 있다면 user 생성
     private User saveOrUpdate(OAuth2User oAuth2User) {
         Map<String, Object> attributes = oAuth2User.getAttributes();
         String email = (String) attributes.get("email");
         String name = (String) attributes.get("name");
+
         User user = userRepository.findByEmail(email)
                 .map(entity -> entity.update(name))
                 .orElse(User.builder()
