@@ -2,6 +2,8 @@ package org.blog.springbootdeveloper.config;
 
 import lombok.RequiredArgsConstructor;
 import org.blog.springbootdeveloper.config.jwt.TokenProvider;
+import org.blog.springbootdeveloper.config.oauth.OAuth2AuthorizationRequestBasedOnCookieRepository;
+import org.blog.springbootdeveloper.config.oauth.OAuth2SuccessHandler;
 import org.blog.springbootdeveloper.config.oauth.OAuth2UserCustomService;
 import org.blog.springbootdeveloper.repository.RefreshTokenRepository;
 import org.blog.springbootdeveloper.service.UserService;
@@ -66,7 +68,7 @@ public class WebOAuthSecurityConfig {
 
         // /api로 시작하는 url인 경우 401상태 코드를 반환하도록 예외 처리함
         http.exceptionHandling()
-                .defaultAccessDeniedHandlerFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
+                .defaultAuthenticationEntryPointFor(new HttpStatusEntryPoint(HttpStatus.UNAUTHORIZED),
                         new AntPathRequestMatcher("/api/**"));
         return http.build();
     }
@@ -85,16 +87,13 @@ public class WebOAuthSecurityConfig {
     }
 
     @Bean
-    public OAuth2AuthorizationReqeustBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
-        return new OAuth2AuthorizationReqeustBasedOnCookieRepository();
+    public OAuth2AuthorizationRequestBasedOnCookieRepository oAuth2AuthorizationRequestBasedOnCookieRepository() {
+        return new OAuth2AuthorizationRequestBasedOnCookieRepository();
     }
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder() {
         return new BCryptPasswordEncoder();
     }
-
-    }
-
 
 }

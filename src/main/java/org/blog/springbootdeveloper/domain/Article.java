@@ -25,8 +25,12 @@ public class Article {
     @Column(name="content",nullable = false)
     private String content;
 
+    @Column(name="author", nullable = false)
+    private String author;
+
     @Builder
-    public Article(String title, String content){    //'id' 필드는 DB에서 자동으로 생성되는 값이여서(위의 주석 참고)
+    public Article(String author,String title, String content){    //'id' 필드는 DB에서 자동으로 생성되는 값이여서(위의 주석 참고)
+        this.author = author;
         this.title = title;
         this.content = content;
     }

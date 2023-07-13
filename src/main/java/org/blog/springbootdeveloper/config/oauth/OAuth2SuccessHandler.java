@@ -28,7 +28,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 
     private final TokenProvider tokenProvider;
     private final RefreshTokenRepository refreshTokenRepository;
-    private final OAuth2AuthorizationReqeustBasedOnCookieRepository authorizationReqeustRepository;
+    private final OAuth2AuthorizationRequestBasedOnCookieRepository authorizationReqeustRepository;
     private final UserService userService;
 
     @Override

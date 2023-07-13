@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @RequiredArgsConstructor  //final 이나 @NonNull 이 붙은 필드를 인자로 가지는 생성자를 자동으로 생성
@@ -19,8 +20,8 @@ public class BlogApiController {
 
     //HTTP메소드가 POST일때 전달받은 URL과 동일하면 메소드를 매핑
     @PostMapping("/api/articles")  //글 생성
-    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request) {
-        Article savedArticle = blogService.save(request);
+    public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request, Principal principal) {
+        Article savedArticle = blogService.save(request,principal.getName());
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }

@@ -20,8 +20,8 @@ public class BlogService {
     //블로그 글 추가 메소드
     //AddArticleRequest DTO를 toEntity()를 통해 'Article'엔티티로 변환후,
     //BlogRepository의 save메소드를 통해 DB에 저장함
-    public Article save(AddArticleRequest request){
-        return blogRepository.save(request.toEntity()); //DTO를 받아 엔티티 객체로 변환한 후, DB에 저장
+    public Article save(AddArticleRequest request,String userName){
+        return blogRepository.save(request.toEntity(userName)); //DTO를 받아 엔티티 객체로 변환한 후, DB에 저장
     }
 
     public List<Article> findAll(){
