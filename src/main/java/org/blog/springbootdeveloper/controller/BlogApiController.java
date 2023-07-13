@@ -22,6 +22,7 @@ public class BlogApiController {
     @PostMapping("/api/articles")  //글 생성
     public ResponseEntity<Article> addArticle(@RequestBody AddArticleRequest request, Principal principal) {
         Article savedArticle = blogService.save(request,principal.getName());
+        //principal.getName() : 현재 인증된 사용자의 이름을 반환함 , Principal: 인증된 사용자의 정보를 나타내는 인터페이스
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(savedArticle);
     }
